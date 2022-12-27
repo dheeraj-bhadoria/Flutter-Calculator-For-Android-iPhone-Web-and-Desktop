@@ -1,32 +1,150 @@
 import 'package:flutter/material.dart';
-import 'package:fluttercalculator/calculator.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(Calculator());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+class Calculator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const Calculator(title: 'My Calculator'),
+      debugShowCheckedModeBanner: false,
+      title: 'Calculator',
+      home: CalculatorHome(),
     );
+  }
+}
+
+class CalculatorHome extends StatefulWidget {
+  @override
+  _CalculatorHomeState createState() => _CalculatorHomeState();
+}
+
+class _CalculatorHomeState extends State<CalculatorHome> {
+  String output = "0";
+
+  String _output = "0";
+  double num1 = 0.0;
+  double num2 = 0.0;
+  String operand = "";
+
+  buttonPressed(String buttonText) {
+    if (buttonText == "CLEAR") {
+      _output = "0";
+      num1 = 0.0;
+      num2 = 0.0;
+      operand = "";
+    } else if (buttonText == "+" ||
+        buttonText == "-" ||
+        buttonText == "/" ||
+        buttonText == "X") {
+      num1 = double.parse(output);
+
+      operand = buttonText;
+
+      _output = "0";
+    } else if (buttonText == ".") {
+      if (_output.contains(".")) {
+        print("Already conatains a decimals");
+        return;
+      } else {
+        _output = _output + buttonText;
+      }
+    } else if (buttonText == "=") {
+      num2 = double.parse(output);
+
+      if (operand == "+") {
+        _output = (num1 + num2).toString();
+      }
+      if (operand == "-") {
+        _output = (num1 - num2).toString();
+      }
+      if (operand == "X") {
+        _output = (num1 * num2).toString();
+      }
+      if (operand == "/") {
+        _output = (num1 / num2).toString();
+      }
+
+      num1 = 0.0;
+      num2 = 0.0;
+      operand = "";
+    } else {
+      _output = _output + buttonText;
+    }
+
+    setState(() {
+      output = double.parse(_output).toStringAsFixed(2);
+    });
+  }
+
+  Widget buildButton(String buttonText) {
+    return new Expanded(
+      child: new OutlinedButton(
+        child: new Text(
+          buttonText,
+          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        ),
+        onPressed: () => buttonPressed(buttonText),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        appBar: new AppBar(
+        title: new Text("Calculator"),
+    ),
+    body: new Container(
+    child: new Column(
+    children: <Widget>[
+    new Container(
+        alignment: Alignment.centerRight,
+        padding: new EdgeInsets.symmetric(
+          vertical: 24.0,
+          horizontal: 12.0,
+        ),
+        child: new Text(
+          output,
+          style: new TextStyle(
+            fontSize: 48.0,
+            fontWeight: FontWeight.bold,
+          ),
+        )),
+      new Expanded(
+        child: new Divider(),
+      ),
+      new Column(children: [
+        new Row(children: [
+          buildButton("7"),
+          buildButton("8"),
+          buildButton("9"),
+          buildButton("/")
+        ]),
+        new Row(children: [
+          buildButton("4"),
+          buildButton("5"),
+          buildButton("6"),
+          buildButton("X")
+        ]),
+        new Row(children: [
+          buildButton("1"),
+          buildButton("2"),
+          buildButton("3"),
+          buildButton("-")
+        ]),
+        new Row(children: [
+          buildButton("."),
+          buildButton("0"),
+          buildButton("00"),
+          buildButton("+")
+        ]),
+        new Row(children: [
+          buildButton("CLEAR"),
+          buildButton("="),
+        ])
+      ])
+    ],
+    )));
   }
 }
 

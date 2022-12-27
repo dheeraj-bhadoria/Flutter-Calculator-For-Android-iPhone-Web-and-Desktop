@@ -1,11 +1,11 @@
 {
-    "name": "fluttercalculator",
-    "short_name": "fluttercalculator",
+    "name": "calculatorflutter",
+    "short_name": "calculatorflutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "calculatorflutter",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
